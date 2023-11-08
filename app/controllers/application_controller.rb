@@ -2,7 +2,7 @@ class ApplicationController < ActionController::API
     include ActionController::RequestForgeryProtection
     protect_from_forgery with: :exception
     before_action :snake_case_params, :attach_authenticity_token
-    # rescue_from BrewException, with: :handle_brew_exception
+
     rescue_from StandardError, with: :unhandled_error
     rescue_from ActionController::InvalidAuthenticityToken,
         with: :invalid_authenticity_token
@@ -61,10 +61,6 @@ class ApplicationController < ActionController::API
     def attach_authenticity_token
         headers['X-CSRF-Token'] = masked_authenticity_token(session)
     end
-
-    # def handle_brew_exception
-    #     render json: ["I can't brew; I'm a teapot!"], status: 418
-    # end
 
     def invalid_authenticity_token
         render json: { message: 'Invalid authenticity token' }, 
